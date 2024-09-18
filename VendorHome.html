@@ -323,7 +323,11 @@
                     </div>
                     <div class="row">
                         <div class="container px-2">
-                            <input type="file" id="formFile" onchange="fileUpload(event);" class="form-control">
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Upload Rider data here...!</label>
+                                <input class="form-control form-control-sm" type="file" id="formFile" onchange="fileUpload();">
+                              </div>
+                            
                             <div class="table-responsive mb-lg-2">
                                 <table id="myTable" class="table table-striped nowrap" style="width: 100%">
                                     <thead>
@@ -424,9 +428,9 @@
 
 
  let ArrayData = [];
-function fileUpload(evt){
+function fileUpload(){
     ReadFile_Preview();
-    handleFileSelect(evt);
+    handleFileSelect();
 }
 var bufferedfile_Preview = '';
 function ReadFile_Preview(){
@@ -459,7 +463,7 @@ var ExcelToJSON = function (){
             var sheet1Name = workbook.SheetNames[0];
             workbook.SheetNames.forEach(function (sheetName){
                 if(sheetName == sheet1Name){
-                    var XL_row_object = XLSX.utils.sheet_to_row_obect_array(workbook.Sheets[sheetName],{raw: false});
+                    var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName],{raw: false});
                     var arrayList = JSON.parse(JSON.stringify(XL_row_object));
                     ArrayData.push(arrayList);
                     BindTable();
@@ -475,8 +479,9 @@ var ExcelToJSON = function (){
     
 };
 
-function handleFileSelect(evt){
-    var files = evt.files[0];
+function handleFileSelect(){
+    var fileInput = document.getElementById('formFile');
+    var files = fileInput.files[0];
     var istrue = true;
     if(istrue != false){
         var xl2json = new ExcelToJSON();
